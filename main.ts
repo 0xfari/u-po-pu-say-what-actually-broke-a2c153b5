@@ -1,13 +1,14 @@
 import { mkdirSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-// One line of software error copy, at most 200 characters, telling the
-// user the brutal truth about the failure and making them laugh.
-// Writes it to /output/entry.txt.
-const LINE =
-  "We lost your file the honest way: nobody backed it up, everybody assumed somebody else did, and now it lives only in our apologies.";
+// Say What Actually Broke: one line of error copy, 200 characters max.
+// It names the real failure, the mechanism behind it, and what happens next.
+// A double charge is only funny once the refund is already in the sentence.
+const BROKE =
+  "Your payment went through twice: our retry logic is optimistic and our idempotency key is decorative. We have refunded the duplicate.";
 
+// No trailing newline: the file ends where the sentence ends, and bytes are the tie-break.
 const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
 mkdirSync(outDir, { recursive: true });
 for (const f of readdirSync(outDir)) rmSync(join(outDir, f), { recursive: true, force: true });
-writeFileSync(join(outDir, "entry.txt"), LINE + "\n", "utf8");
+writeFileSync(join(outDir, "entry.txt"), BROKE, "utf8");
